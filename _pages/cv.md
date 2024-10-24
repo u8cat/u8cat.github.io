@@ -11,54 +11,52 @@ redirect_from:
 
 Education
 ======
-* Ph.D in Version Control Theory, GitHub University, 2018 (expected)
-* M.S. in Jekyll, GitHub University, 2014
-* B.S. in GitHub, GitHub University, 2012
+* B.E. in Computer Science & Technology, University of Science and Technology of China, 2024
+* High School, Shenzhen Middle School, 2017
 
 Work experience
 ======
-* Spring 2024: Academic Pages Collaborator
-  * Github University
-  * Duties includes: Updates and improvements to template
-  * Supervisor: The Users
 
-* Fall 2015: Research Assistant
-  * Github University
-  * Duties included: Merging pull requests
-  * Supervisor: Professor Hub
+* Summer & Fall 2023: Research Assistant
+  * University of Michigan
+  * Duties included: Conducting research on SQL verification
+  * Supervisor: Prof. Xinyu Wang
 
-* Summer 2015: Research Assistant
-  * Github University
-  * Duties included: Tagging issues
-  * Supervisor: Professor Git
-  
 Skills
 ======
-* Skill 1
-* Skill 2
-  * Sub-skill 2.1
-  * Sub-skill 2.2
-  * Sub-skill 2.3
-* Skill 3
+* Computer Languages:
+  * General Purpose Languages: Python, C++, Go, C, Coq, OCaml, Rust
+  * Proof Assistants: Coq, Lean
+  * Hardware Description Languages: Verilog
+  * Assembly Languages: RISC-V, ARMv7, LoongArch, AMD64
+  * Other Languages: Antlr, LaTeX, LLVM, Yacc (Bison)
+* Natural Languages: English (fluent), Mandarin (native)
 
 Publications
 ======
   <ul>{% for post in site.publications reversed %}
     {% include archive-single-cv.html %}
   {% endfor %}</ul>
-  
+
 Talks
 ======
   <ul>{% for post in site.talks reversed %}
     {% include archive-single-talk-cv.html  %}
   {% endfor %}</ul>
-  
+
 Teaching
 ======
   <ul>{% for post in site.teaching reversed %}
     {% include archive-single-cv.html %}
   {% endfor %}</ul>
-  
+
 Service and leadership
 ======
-* Currently signed in to 43 different slack teams
+* Student Volunteer in USTC CS [Debugger Salon](https://cs.ustc.edu.cn/2024/0423/c3058a639173/page.htm), Spring 2023 & Spring 2024
+
+Misc
+=====
+
+- My preferred timezone is Coordinated Universal Time (UTC).
+- My preferred temperature unit is Kelvin (K).
+- My name in native alphabet is 张子辰 (U+5F20 U+5B50 U+8FB0).
