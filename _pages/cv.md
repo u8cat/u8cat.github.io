@@ -25,8 +25,8 @@ Work experience
 Skills
 ======
 * Computer Languages:
-  * General Purpose Languages: Python, C++, Go, C, Coq, OCaml, Rust
-  * Proof Assistants: Coq, Lean
+  * General Purpose Languages: Python, C++, Go, C, OCaml, Rust
+  * Proof Assistants: Rocq, Lean
   * Hardware Description Languages: Verilog
   * Assembly Languages: RISC-V, ARMv7, LoongArch, AMD64
   * Other Languages: Antlr, LaTeX, LLVM, Yacc (Bison)

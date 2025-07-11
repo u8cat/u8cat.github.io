@@ -2,14 +2,14 @@
 permalink: /
 title: "About Me"
 author_profile: true
-redirect_from: 
+redirect_from:
   - /about/
   - /about.html
 ---
 
-I am a first year Computer Science PhD student at [Courant Institute of Mathematical Sciences](https://www.cims.nyu.edu/), [New York University](https://www.nyu.edu/), working with Prof. [Joseph Tassarotti](https://cs.nyu.edu/~jt4767/) in the [ACSys](https://cs.nyu.edu/acsys/) group.
+I am a second year Computer Science PhD student at [Courant Institute of Mathematical Sciences](https://www.cims.nyu.edu/), [New York University](https://www.nyu.edu/), working with Prof. [Joseph Tassarotti](https://cs.nyu.edu/~jt4767/) in the [ACSys](https://cs.nyu.edu/acsys/) group.
 
-My research interests lie broadly in formal verification, and I am currently working on crash-aware future-dependent linearizability verification using prophecy variables in [Iris](https://iris-project.org/).
+My research interests lie broadly in formal verification, and I am currently working on extensible program logics in the [Iris](https://iris-project.org/) separation logic framework.
 
 In the summer and fall of 2023, I was an intern in Prof. [Xinyu Wang](https://web.eecs.umich.edu/~xwangsd/)'s group at the [University of Michigan](https://umich.edu/), and worked on SMT-based automated bounded equivalence verification for SQL queries as a follow-up of the VeriEQL project.
 

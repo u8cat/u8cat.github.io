@@ -24,8 +24,8 @@ author:
   avatar           : "profile.jpg"
   name             : "Zichen Zhang"
   pronouns         : "he/him/his"
-  bio              : "1st year CS PhD student"
-  location         : "60 Fifth Avenue, Room 428l, New York, NY 10011"
+  bio              : "2nd year CS PhD student"
+  location         : "60 Fifth Avenue, Room 428P, New York, NY 10011"
   employer         : "New York University"
   uri              : # URL
   email            : "⟨first⟩ ⟨last⟩ at nyu.edu"
@@ -86,7 +86,7 @@ publication_category:
 teaser                   :  # filename of teaser fallback teaser image placed in /images/, .e.g. "500x300.png"
 breadcrumbs              : false # true, false (default)
 words_per_minute         : 160
-future                   : true
+future                   : false
 read_more                : "disabled" # if enabled, adds "Read more" links to excerpts
 talkmap_link             : false #change to true to add link to talkmap on talks page
 comments:
