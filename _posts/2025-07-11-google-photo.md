@@ -9,7 +9,7 @@ tags:
 
 Users of [Google Photo](https://www.google.com/photos/about/) should be aware that although the photo information interface only displays a time in minutes, photos taken within one minute are *usually* sorted correctly in chronological order. While some people might think they are sorted by filename or upload order, the truth is that they are still sorted by time but using an internal millisecond timestamp.
 
-This internal timestamp can be problematic when users manually specify the date & time of a photo using Google Photo interface because this will truncate the timestamp to minute, resulting in a problem known as wrong order of photos with “the same” timestamp[^1][^2]. Despite reported by many users, to the best of my knowledge, no solution or workaround has been proposed by users, nor has Google revealed any plan to fix it. This article studies the mechanism of the internal timestamp and then proposes a method to set timestamps with precision up to the second in Google Photo.
+This internal timestamp can be problematic when users manually specify the date & time of a photo using Google Photo interface because this will truncate the timestamp to minute[^1], resulting in a problem known as wrong order of photos with “the same” timestamp[^2][^3]. Despite reported by many users, to the best of my knowledge, no solution or workaround has been proposed by users, nor has Google revealed any plan to fix it. This article studies the mechanism of the internal timestamp and then proposes a method to set timestamps with precision up to the second in Google Photo.
 
 # Mechanism of the Internal Timestamp
 
@@ -31,7 +31,7 @@ Besides being truncated to minute and then displayed to the user, the *only* fun
 
 ## Editing
 
-The non-deterministic behavior due to the conflict between sources (A) and (B) is my major motivation to manually edit the timestamps of my photos. For other people, the most common motivation is that source (C) is often incorrect[^3][^4].
+The non-deterministic behavior due to the conflict between sources (A) and (B) is my major motivation to manually edit the timestamps of my photos. For other people, the most common motivation is that source (C) is often incorrect[^4][^5].
 
 When editing the date & time of a photo, the interface only shows the time in minutes, and after editing, the second and millisecond part of the timestamp will be *reset to zero*. As a result, if there are two photos taken within one minutes, one with the automatically created internal timestamp and the other with manually edited timestamp, the second one will be prior to the first one regarding of their true taken time (unless in an extremely rare case where the first photo was taken exactly on the zeroth millisecond of that minute).
 
@@ -45,7 +45,7 @@ Although the behavior of truncating during editing is annoying, it is actually p
 
 ## Correcting Timezone
 
-Before discussing how to specify the timestamp of a photo, let's first study a more common scenario—correcting the wrong timezone inferred during uploading. Although we could easily change the timestamp and timezone of photos in batch, doing this naively will result in the subtraction of timestamp.
+Before discussing how to specify the timestamp of a photo, let's first study a more common scenario—correcting the wrong timezone inferred during uploading[^1]. Although we could easily change the timestamp and timezone of photos in batch, doing this naively will result in the subtraction of timestamp.
 
 Observing that the subtraction phenomenon changes the second field of the first photo to zero, if the field is already zero, then this phenomenon will not happen. We don't have to scarify any photos to make the first photo have zero second field; instead, we can upload a dummy picture, edit its timestamp to be prior to the first photo, and use the dummy photo to change the timestamps of useful photos in batch. Summarizing in pseudocode (because there is no Google Photo API to manage existing photos, it is very tricky to write a machine-executable script), the procedure is:
 
@@ -75,14 +75,45 @@ The final step is selecting dummy.jpg and photo.jpg, and change the data & time 
 
 Due to the behavior of batch editing, this method can only set the timestamp to the zeroth millisecond of a second, i.e., the actual timestamp of photo.jpg will become `2025-07-10T20:29:22.000`. To verify this claim, we can upload two photos with timestamps `2025-07-10T20:29:21.999` and `2025-07-10T20:29:21.001`, respectively, and photo.jpg should be sorted between the two photos.
 
+### Generating dummy.jpg
+
+Since manually create dummy.jpg described above is tedious, I wrote a script to automate this process.
+
+```bash
+#!/bin/bash
+
+# Usage: ./dummy.sh <date> <time>
+# Example: ./dummy.sh 2024-07-10 20:29:22
+
+DATE=$1
+FULL_TIME=$2
+TIME=${FULL_TIME:0:5}
+SECOND=${FULL_TIME:6:2}
+if [[ ${SECOND:0:1} -eq '0' ]]; then
+    OFFSET=$(( 60 - ${SECOND:1:1} ))
+else
+    OFFSET=$(( 60 - $SECOND ))
+fi
+
+FILE=${DATE}T$FULL_TIME.jpg
+TIMESTAMP="$(echo $DATE | sed s/-/:/g) $TIME:$OFFSET.000+00:00"
+
+convert -background white -fill black -pointsize 128 label:"$DATE\n$FULL_TIME" $FILE
+
+exiftool -SubSecDateTimeOriginal="$TIMESTAMP" $FILE -overwrite_original
+```
+
+To use the script, the user specifies the target timestamp of the useful picture, and the script will calculate the timestamp of the dummy picture and generate a picture containing the text of the target timestamp.
+
 # Conclusion and Limitation
 
 I have proposed a method to set the timestamp of a photo in Google Photo to second-level precision, but this method will truncate the millisecond part of the timestamp to 0. This method is good enough for most daily use but can still miss up photos taken within one second.
 
 # References
 
-[^1]: Adam A. Change the order of photos with the same timestamp. 2019. https://support.google.com/photos/thread/1032721/change-the-order-of-photos-with-the-same-timestamp?hl=en Accessed: 2025-07-10
-[^2]: Martijn Groothuis. Google photos wrong order for sequence of photos. 2019. https://support.google.com/photos/thread/10211279?hl=en Accessed: 2025-07-10
-[^3]: nontavit. Google Photos sorting and time zone issue. 2017. https://medium.com/@nontavit/google-photos-and-time-zone-issue-b2e2d20645b0 Accessed: 2025-07-10
-[^4]: -SpaghettiCat-. Google Photos Not Sorting In Correct Chronological Order. 2021. https://www.reddit.com/r/google/comments/r3mets/google_photos_not_sorting_in_correct/ Accessed: 2025-07-10
+[^1]: Yang-z. The seconds value of timestamp get lost after adjusting the time of photos or videos on the web. 2018. https://support.google.com/photos/thread/660932/the-seconds-value-of-timestamp-get-lost-after-adjusting-the-time-of-photos-or-videos-on-the-web?hl=en Accessed: 2025-07-13
+[^2]: Adam A. Change the order of photos with the same timestamp. 2019. https://support.google.com/photos/thread/1032721/change-the-order-of-photos-with-the-same-timestamp?hl=en Accessed: 2025-07-10
+[^3]: Martijn Groothuis. Google photos wrong order for sequence of photos. 2019. https://support.google.com/photos/thread/10211279?hl=en Accessed: 2025-07-10
+[^4]: nontavit. Google Photos sorting and time zone issue. 2017. https://medium.com/@nontavit/google-photos-and-time-zone-issue-b2e2d20645b0 Accessed: 2025-07-10
+[^5]: -SpaghettiCat-. Google Photos Not Sorting In Correct Chronological Order. 2021. https://www.reddit.com/r/google/comments/r3mets/google_photos_not_sorting_in_correct/ Accessed: 2025-07-10
 
